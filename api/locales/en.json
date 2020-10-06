@@ -1,0 +1,32 @@
+{
+  "errors": {
+    "NoArea": "No area are defined"
+  },
+  "data": {
+    "infos": {
+      "insert": "Insert data in raw data [{{ id }}]",
+      "correction": "Insert correction for data [{{ keyid }}] at {{ date_raw }} for {{ value_raw }}",
+      "double": "Correction already recorded for data  [{{ keyid }}] le {{ date_raw }} pour {{ value_raw }}"
+    },
+    "insertcsv": {
+      "importCsvStatus": "Status : {{ data }}",
+      "importCsvIntput": "fichier lu : {{ data }}",
+      "importCsvLocalFile": "fichier local : {{ data }}",
+      "importCsvLocalOutput": "fichier de sortie local : {{ data }}",
+      "importCsvOutput": "fichier de sortie : {{ data }}",
+      "importCsvLines": "Traitement de {{ data }} lignes",
+      "importCsvNoStation": "Stations non trouvées : {{ data }}",
+      "importCsv": "Importation fichier csv {{ data }}",
+      "importCsvDuplicateNull": "Données Erronées {{ data }}",
+      "importCsvDuplicateData": "Doublons données {{ data }}",
+      "importCsvDuplicateCorrection": "Doublons correction(s)  {{ data }}",
+      "importCsvInsertData": "Données ajoutées {{ data }}",
+      "importCsvInsertCorrection": "Corrections ajoutées {{ data }}"
+    },
+    "errors": {
+      "station_all": "station_code OR station_id but not both",
+      "sensor_all": "sensor_code OR sensor_id but not both",
+      "not_found": "{{ what }} : \"[{{ key }}\" not present in database"
+    }
+  }
+}

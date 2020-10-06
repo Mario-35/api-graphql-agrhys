@@ -1,0 +1,39 @@
+{
+  "name": "proxy",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "author": "mario ADAM mario.adam@inrae.fr",
+  "scripts": {
+    "build": "webpack",
+    "push": "babel-node -x .ts ./scripts/push --",
+    "deploy": "babel-node -x .ts ./scripts/deploy --"
+  },
+  "dependencies": {
+    "@babel/core": "^7.11.4",
+    "@cloudflare/workers-types": "^2.0.0",
+    "@types/minimist": "^1.2.0",
+    "babel-loader": "^8.1.0",
+    "core-js": "^3.6.5",
+    "cross-spawn": "^7.0.3",
+    "env": "workspace:*",
+    "got": "^11.5.2",
+    "minimist": "^1.2.5",
+    "typescript": "4.0.2",
+    "webpack": "5.0.0-beta.28",
+    "webpack-cli": "webpack/webpack-cli#workspace=webpack-cli&commit=86dfe514a5b5de38f631a02e5211d10f32c536b9"
+  },
+  "eslintConfig": {
+    "overrides": [
+      {
+        "files": [
+          "src/**.ts"
+        ],
+        "env": {
+          "worker": true,
+          "node": false
+        }
+      }
+    ]
+  }
+}

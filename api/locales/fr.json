@@ -1,0 +1,33 @@
+{
+  "errors": {
+    "NoArea": "Aucune area n'est indiqué",
+    "areaNotFound": "Area non trouvée",
+    "NoDate": "Aucune indication de date",
+    "NoKeyid": "Aucun(e) Keyid indiquée",
+    "NoSensor": "Aucun sensor trouvé"
+  },
+  "data": {
+    "infos": {
+      "insert": "Insertion dans les raw data [{{ id }}]",
+      "correction": "Insertion dans les corrections pour la donnée [{{ keyid }}] le {{ date_raw }} pour {{ value_raw }}",
+      "double": "Correction dejà enregistrée pour [{{ keyid }}] le {{ date_raw }} pour {{ value_raw }}",
+      "importCsv": "Importation fichier csv  [{{ modification }}] le {{ doublons }} pour {{ errors }}"
+    },
+    "errors": {
+      "station_all": "station_code OU station_id mais pas les 2.",
+      "sensor_all": "sensor_code OU sensor_id mais pas les 2.",
+      "not_found": "{{ what }} : '{{ key }}' non trouvé"
+    }
+  },
+  "area": {
+    "infos": {
+      "insert": "Insertion dans les area(s) de [{{ code }}]",
+      "update": "Mise a jour dans dans les area(s) de [{{ code }}]",
+      "delete": "Suppression dans les area(s) de [{{ code }}]"
+    }
+  },
+  "Update already in database": "Update already in database",
+  "db": {
+    "updateAlreadyIn": "Mise à jour dejà presente"
+  }
+}
