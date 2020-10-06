@@ -42,8 +42,13 @@ export class Context {
   //   return this.req.__(keys, datas);
   // }
 
-  addInfo(key: string, infos: string): void {
+  addInfoTranslate(key: string, infos: string): void {
     this.resultsInfos[key] = i18n.__(infos);
+    // this.resultsInfos.push(datas ? (keys, datas) : keys);
+  }
+
+  addInfo(key: string, infos: unknown): void {
+    this.resultsInfos[key.includes(".") ? this.req.__(key) : key] = infos;
     // this.resultsInfos.push(datas ? (keys, datas) : keys);
   }
 

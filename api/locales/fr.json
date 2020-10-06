@@ -29,5 +29,22 @@
   "Update already in database": "Update already in database",
   "db": {
     "updateAlreadyIn": "Mise à jour dejà presente"
+  },
+  "Ok": "Ok",
+  "importCsv": {
+    "status": "Status",
+    "input": "Fichier source",
+    "LocalFile": "Fichier local",
+    "output": "Fichier de sortie",
+    "nbLines": "Nombre de lignes",
+    "noStation": "Station(s) non trouvées",
+    "duplicateNull": "Lignes dupliquées Null",
+    "duplicateData": "Lignes dupliquées dans les dannées",
+    "duplicateUpdate": "Lignes dupliquées dans les mise a jour",
+    "insertData": "Insérées dans leo données",
+    "noSensor": "Capteur(s) non trouvées",
+    "stayInFile": "Données restant non traitées",
+    "deleteFromData": "importCsv.deleteFromData",
+    "deleteFromUpdate": "importCsv.deleteFromUpdate"
   }
 }

@@ -55,6 +55,8 @@ export type Dataraw = {
   value: string | null; // real
   validate: string | null; // real
   active: boolean; // boolean
+  import: string | null; // character varying
+  tmp: number | null; // integer
   created_at: Date; // timestamp with time zone
   updated_at: Date; // timestamp with time zone
 };
@@ -65,6 +67,8 @@ export type Dataupdate = {
   date: Date; // timestamp with time zone
   value: string; // real
   validate: boolean; // boolean
+  import: string | null; // character varying
+  tmp: number | null; // integer
 };
 
 export type Sensor = {

@@ -180,5 +180,85 @@ module.exports.seed = async (/** @type {Knex} */ db) => {
       name: "Température de l''air",
       unite: "°C",
     },
+
+    // {
+    //   station_id: 2,
+    //   code: "X222",
+    //   name: "Pipo",
+    //   unite: "bordel",
+    // },
+    // {
+    //   station_id: 2,
+    //   code: "X305",
+    //   name: "Pipo",
+    //   unite: "bordel",
+    // },
+
+    // {
+    //   station_id: 2,
+    //   code: "X703",
+    //   name: "Pipo",
+    //   unite: "bordel",
+    // },
+
+    // {
+    //   station_id: 2,
+    //   code: "X211",
+    //   name: "Pipo",
+    //   unite: "bordel",
+    // },
+
+    // {
+    //   station_id: 2,
+    //   code: "0205",
+    //   name: "Pipo",
+    //   unite: "bordel",
+    // },
+    // {
+    //   station_id: 2,
+    //   code: "0224",
+    //   name: "Pipo",
+    //   unite: "bordel",
+    // },
+
+    // {
+    //   station_id: 2,
+    //   code: "X102",
+    //   name: "Pipo",
+    //   unite: "bordel",
+    // },
+
+    // {
+    //   station_id: 2,
+    //   code: "X304",
+    //   name: "Pipo",
+    //   unite: "bordel",
+    // },
+    // {
+    //   station_id: 2,
+    //   code: "X701",
+    //   name: "Pipo",
+    //   unite: "bordel",
+    // },
+    // {
+    //   station_id: 2,
+    //   code: "0701",
+    //   name: "Pipo",
+    //   unite: "bordel",
+    // },
+
+    // {
+    //   station_id: 2,
+    //   code: "X702",
+    //   name: "Pipo",
+    //   unite: "bordel",
+    // },
+
+    // {
+    //   station_id: 2,
+    //   code: "W701",
+    //   name: "Pipo",
+    //   unite: "bordel",
+    // },
   ]);
 };

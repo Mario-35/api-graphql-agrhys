@@ -17,8 +17,9 @@ module.exports.up = async (/** @type {Knex} */ db) /* prettier-ignore */ => {
     table.float('value').defaultTo(0);
     table.float('validate').defaultTo(0);
     table.boolean("active").notNullable().defaultTo(true);
+    table.string("import", 50);
+    table.integer('tmp');
     table.timestamps(false, true);
-
   });
 };
 
