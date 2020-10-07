@@ -12,7 +12,7 @@ import { cursorToOffset } from "graphql-relay";
 
 import db, { Dataupdate } from "../db";
 import { Context } from "../context";
-import { DataupdateType, customArgs } from "../types";
+import { DataupdateType } from "../types";
 import { makeQueryRawSearchDate } from "../utils";
 import { GraphQLBigInt } from "../fields";
 
@@ -64,9 +64,7 @@ export const dataupdates: GraphQLFieldConfig<Dataupdate, Context> = {
     if (args.first || args.after) {
       ctx.resultsInfos.limit = args.first === undefined ? 50 : args.first;
       ctx.resultsInfos.offset = args.after ? cursorToOffset(args.after) + 1 : 0;
-      query
-        .limit(Number(ctx.resultsInfos.limit))
-        .offset(Number(ctx.resultsInfos.offset));
+      query.limit(Number(ctx.resultsInfos.limit)).offset(Number(ctx.resultsInfos.offset));
 
       delete args.first;
       delete args.after;

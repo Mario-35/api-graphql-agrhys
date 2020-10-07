@@ -11,12 +11,7 @@ import { SensorType } from "../types";
 import { Context } from "../context";
 import { validate, searchStationId } from "../utils";
 import { mutationWithClientMutationId } from "graphql-relay";
-import {
-  GraphQLNonNull,
-  GraphQLString,
-  GraphQLList,
-  GraphQLInt,
-} from "graphql";
+import { GraphQLNonNull, GraphQLString, GraphQLList, GraphQLInt } from "graphql";
 
 const inputFields = {
   station_id: { type: GraphQLInt },
@@ -65,6 +60,7 @@ export const addSensor = mutationWithClientMutationId({
     },
   },
 
+  // eslint-disable-next-line
   async mutateAndGetPayload(input, ctx: Context) {
     const { data, errors } = validateInput(input);
 
@@ -121,7 +117,7 @@ export const updateSensor = mutationWithClientMutationId({
     },
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line
   async mutateAndGetPayload(input, ctx: Context) {
     const { data, errors } = validateInput(input);
 
@@ -132,11 +128,7 @@ export const updateSensor = mutationWithClientMutationId({
     let sensor;
 
     if (Object.keys(data).length) {
-      [sensor] = await db
-        .table<Sensor>("sensor")
-        .where({ code: data.code })
-        .update(data)
-        .returning("*");
+      [sensor] = await db.table<Sensor>("sensor").where({ code: data.code }).update(data).returning("*");
     }
 
     return { sensor };
@@ -161,11 +153,9 @@ export const deleteSensor = mutationWithClientMutationId({
     },
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line
   async mutateAndGetPayload(input, ctx: Context) {
-    const { data, errors } = validate(input, (x) =>
-      x.field("code", { trim: true }).isRequired(),
-    );
+    const { data, errors } = validate(input, (x) => x.field("code", { trim: true }).isRequired());
 
     if (errors.length > 0) {
       return { errors };

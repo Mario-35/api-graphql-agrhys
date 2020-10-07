@@ -6,13 +6,7 @@
  */
 
 import { mutationWithClientMutationId } from "graphql-relay";
-import {
-  GraphQLNonNull,
-  GraphQLID,
-  GraphQLString,
-  GraphQLBoolean,
-  GraphQLList,
-} from "graphql";
+import { GraphQLNonNull, GraphQLID, GraphQLString, GraphQLBoolean, GraphQLList } from "graphql";
 
 import db, { User } from "../db";
 import { Context } from "../context";
@@ -42,11 +36,12 @@ export const updateUser = mutationWithClientMutationId({
     },
   },
 
+  // eslint-disable-next-line
   async mutateAndGetPayload(input, ctx: Context) {
     const id = fromGlobalId(input.id, "User");
 
     // Check permissions
-    ctx.ensureAuthorized((user) => user.id === id || user.admin);
+    ctx.ensureAuthorized((user) => Number(user.id) === Number(id) || user.admin);
 
     const usernameAvailable =
       input.username === undefined
@@ -83,16 +78,10 @@ export const updateUser = mutationWithClientMutationId({
         .isLength({ max: 10 })
 
         .field("admin")
-        .is(
-          () => Boolean(ctx.user?.admin),
-          "Only admins can update this field.",
-        )
+        .is(() => Boolean(ctx.user?.admin), "Only admins can update this field.")
 
         .field("archived")
-        .is(
-          () => Boolean(ctx.user?.admin),
-          "Only admins can update this field.",
-        ),
+        .is(() => Boolean(ctx.user?.admin), "Only admins can update this field."),
     );
 
     if (errors.length > 0) {

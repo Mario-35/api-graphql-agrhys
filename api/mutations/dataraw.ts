@@ -47,8 +47,8 @@ const importCsv = function (args: { [key: string]: string }, ctx: Context) {
         table.increments("id").unsigned().notNullable().primary();
         table.string("station");
         table.string("sensor");
-        table.string("date_heure");
-        table.string("valeur");
+        table.string("date");
+        table.string("value");
         table.string("info");
       })
       .then(() => {
@@ -60,7 +60,7 @@ const importCsv = function (args: { [key: string]: string }, ctx: Context) {
             table.integer("station_id").defaultTo(0);
             table.integer("sensor_id").defaultTo(0);
             table.timestamp("date_record");
-            table.float("valeur").defaultTo(0);
+            table.float("value").defaultTo(0);
             table.string("info");
             table.string("import", 50);
           })
@@ -68,9 +68,10 @@ const importCsv = function (args: { [key: string]: string }, ctx: Context) {
             db.transaction(async (tx: Knex.Transaction) => {
               function importDatas() {
                 db.raw(
-                  `INSERT INTO ${importFile} (keyid, type, sensor_id, date_record, valeur, info,import)` +
+                  `INSERT INTO ${importFile} (keyid, type, sensor_id, date_record, value, info,import)` +
                     ` SELECT` +
-                    ` CAST(concat(sensor.id, regexp_replace(to_char(TO_TIMESTAMP(REPLACE(${csvFile}.date_heure,'24:00:00','00:00:00'), 'DD/MM/YYYY HH24:MI:SS:MS'), 'YYYYMMDDHH24MI'), '\D','','g')) as bigint),` +
+                    // eslint-disable-next-line no-useless-escape
+                    ` CAST(concat(sensor.id, regexp_replace(to_char(TO_TIMESTAMP(REPLACE(${csvFile}.date,'24:00:00','00:00:00'), 'DD/MM/YYYY HH24:MI:SS:MS'), 'YYYYMMDDHH24MI'), '\D','','g')) as bigint),` +
                     ` CASE substr(${csvFile}.info, 0, 2)` +
                     `   WHEN '#' THEN` +
                     `     2` +
@@ -80,15 +81,15 @@ const importCsv = function (args: { [key: string]: string }, ctx: Context) {
                     `     1` +
                     ` END,` +
                     ` cast(sensor.id as int),` +
-                    ` TO_TIMESTAMP(REPLACE(${csvFile}.date_heure,'24:00:00','00:00:00'), 'DD/MM/YYYY HH24:MI:SS:MS'),` +
-                    ` CASE ${csvFile}.valeur` +
+                    ` TO_TIMESTAMP(REPLACE(${csvFile}.date,'24:00:00','00:00:00'), 'DD/MM/YYYY HH24:MI:SS:MS'),` +
+                    ` CASE ${csvFile}.value` +
                     `   WHEN '---' THEN` +
                     `     NULL` +
                     `   ELSE` +
-                    `     cast(REPLACE(valeur,',','.') as float)` +
+                    `     cast(REPLACE(value,',','.') as float)` +
                     ` END,` +
                     ` substr(${csvFile}.info, 0, 6),` +
-                    ` concat(${csvFile}.station,';',${csvFile}.sensor,';',${csvFile}.date_heure,';',${csvFile}.valeur,';',${csvFile}.info)` +
+                    ` concat(${csvFile}.station,';',${csvFile}.sensor,';',${csvFile}.date,';',${csvFile}.value,';',${csvFile}.info)` +
                     ` FROM ${csvFile}` +
                     ` inner join sensor` +
                     ` on sensor.code = substr(${csvFile}.sensor,0,6);`,
@@ -107,31 +108,31 @@ const importCsv = function (args: { [key: string]: string }, ctx: Context) {
                         }
                         results.noSensor = enumerableSensor;
                         db.raw(
-                          `DELETE FROM ${importFile} AS i WHERE i.keyid = (SELECT keyid FROM dataraw AS d WHERE d.keyid = i.keyid AND d.value isnull AND i.valeur isNULL);`,
+                          `DELETE FROM ${importFile} AS i WHERE i.keyid = (SELECT keyid FROM dataraw AS d WHERE d.keyid = i.keyid AND d.value isnull AND i.value isNULL);`,
                         )
                           // eslint-disable-next-line @typescript-eslint/no-explicit-any
                           .then((res: any) => {
                             results.duplicateNull = res["rowCount"];
                             db.raw(
-                              `DELETE FROM ${importFile} AS i WHERE i.keyid = (SELECT distinct keyid FROM dataraw AS d WHERE d.keyid = i.keyid and d.value = i.valeur) AND type=1;`,
+                              `DELETE FROM ${importFile} AS i WHERE i.keyid = (SELECT distinct keyid FROM dataraw AS d WHERE d.keyid = i.keyid and d.value = i.value) AND type=1;`,
                             )
                               // eslint-disable-next-line @typescript-eslint/no-explicit-any
                               .then((res: any) => {
                                 results.duplicateData = res["rowCount"];
                                 db.raw(
-                                  `DELETE FROM ${importFile} AS i WHERE i.keyid in (SELECT keyid FROM dataupdate AS u WHERE u.keyid = i.keyid AND u.value = i.valeur) AND type=2;`,
+                                  `DELETE FROM ${importFile} AS i WHERE i.keyid in (SELECT keyid FROM dataupdate AS u WHERE u.keyid = i.keyid AND u.value = i.value) AND type=2;`,
                                 )
                                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                   .then((res: any) => {
                                     results.duplicateUpdate = res["rowCount"];
                                     db.raw(
-                                      `INSERT INTO dataraw (keyid, sensor_id, date, value, import, tmp) SELECT keyid, sensor_id, date_record, valeur, import, id FROM ${importFile} WHERE type=1 ON CONFLICT (keyid) DO NOTHING;`,
+                                      `INSERT INTO dataraw (keyid, sensor_id, date, value, import, tmp) SELECT keyid, sensor_id, date_record, value, import, id FROM ${importFile} WHERE type=1 ON CONFLICT (keyid) DO NOTHING;`,
                                     )
                                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                       .then((res: any) => {
                                         results.insertData = res["rowCount"];
                                         db.raw(
-                                          `INSERT INTO dataupdate (keyid, date, value, import, tmp) SELECT keyid, date_record, valeur, import, id FROM ${importFile} AS i WHERE i.keyid in (select keyid from dataraw) AND i.type=2 ON CONFLICT DO NOTHING;`,
+                                          `INSERT INTO dataupdate (keyid, date, value, import, tmp) SELECT keyid, date_record, value, import, id FROM ${importFile} AS i WHERE i.keyid in (select keyid from dataraw) AND i.type=2 ON CONFLICT DO NOTHING;`,
                                         )
                                           .then(() => {
                                             db.raw(
@@ -202,11 +203,12 @@ const importCsv = function (args: { [key: string]: string }, ctx: Context) {
               const client = await tx.client.acquireConnection();
 
               try {
-                fs.statSync(results.LocalFile);
-                const fileStream = fs.createReadStream(results.LocalFile);
+                fs.statSync(results.LocalFile as string);
+                // const fileStream = request("http://fromrussiawithlove.com/baby.mp3").pipe(fs.createWriteStream("song.mp3"));
+                const fileStream = fs.createReadStream(results.LocalFile as string);
                 const stream = await client.query(
                   copyFrom.from(
-                    `COPY ${csvFile} (station, sensor, date_heure, valeur, info) FROM STDIN WITH (FORMAT csv, DELIMITER ';')`,
+                    `COPY ${csvFile} (station, sensor, date, value, info) FROM STDIN WITH (FORMAT csv, DELIMITER ';')`,
                   ),
                 );
                 fileStream.on("error", done);
@@ -249,6 +251,7 @@ export const addDatarawFromFile = mutationWithClientMutationId({
     },
   },
   async mutateAndGetPayload(input: { [key: string]: string }, ctx: Context) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await importCsv(input, ctx).then((res: any) => {
       for (const key in res) {
         ctx.addInfo(`importCsv.${key}`, res[key]);
@@ -343,7 +346,7 @@ export const updateDataraw = mutationWithClientMutationId({
     },
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line
   async mutateAndGetPayload(input, ctx: Context) {
     if (!input.keyid) {
       input.sensor_id = await getSensorId({ ...input });
@@ -368,7 +371,8 @@ export const updateDataraw = mutationWithClientMutationId({
           value: input.value ? input.value : null,
           validate: input.validate ? input.validate : false,
         })
-        .then((res) => Number(res[0].count) > 0);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .then((res: any) => Number(res[0].count) > 0);
 
       if (isInUpdates) {
         ctx.addInfo("infoDB", "db.updateAlreadyIn");
@@ -418,7 +422,7 @@ export const deleteDataraw = mutationWithClientMutationId({
     },
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line
   async mutateAndGetPayload(input, ctx: Context) {
     if (!input.keyid) {
       input.sensor_id = await getSensorId({ ...input });

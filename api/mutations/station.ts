@@ -11,12 +11,7 @@ import { StationType } from "../types";
 import { Context } from "../context";
 import { validate, searchAreaId } from "../utils";
 import { mutationWithClientMutationId } from "graphql-relay";
-import {
-  GraphQLNonNull,
-  GraphQLString,
-  GraphQLList,
-  GraphQLInt,
-} from "graphql";
+import { GraphQLNonNull, GraphQLString, GraphQLList, GraphQLInt } from "graphql";
 
 const inputFields = {
   area_id: { type: GraphQLInt },
@@ -62,6 +57,7 @@ export const addStation = mutationWithClientMutationId({
     },
   },
 
+  // eslint-disable-next-line
   async mutateAndGetPayload(input, ctx: Context) {
     const { data, errors } = validateInput(input);
 
@@ -120,7 +116,7 @@ export const updateStation = mutationWithClientMutationId({
     },
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line
   async mutateAndGetPayload(input, ctx: Context) {
     const { data, errors } = validateInput(input);
 
@@ -131,11 +127,7 @@ export const updateStation = mutationWithClientMutationId({
     let station;
 
     if (Object.keys(data).length) {
-      [station] = await db
-        .table<Station>("station")
-        .where({ code: data.code })
-        .update(data)
-        .returning("*");
+      [station] = await db.table<Station>("station").where({ code: data.code }).update(data).returning("*");
     }
 
     return { station };
@@ -163,7 +155,7 @@ export const deleteStation = mutationWithClientMutationId({
     },
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line
   async mutateAndGetPayload(input, ctx: Context) {
     const { data, errors } = validate(input, (x) =>
       x

@@ -192,8 +192,8 @@ export class Context {
       .orderBy("date", "asc")
       .then((rows) =>
         rows.map((x) => {
-          // TODO x [x] NOT SURE
-          this.dataUpdateByKeyId.prime(x.keyid, [x]);
+          // TODO VERIF x [x] NOT SURE
+          this.dataUpdateByKeyId.prime(Number(x.keyid), [x]);
           return x;
         }),
       )
@@ -207,7 +207,8 @@ export class Context {
       .select()
       .orderBy("date", "asc")
       // .then(mapToMany(keys, (x) => x.keyid)),
-      .then((rows) => mapToMany(rows, keys, (x) => x.keyid)),
+      // TODO VERIF
+      .then((rows) => mapToMany(rows, keys, (x) => Number(x.keyid))),
   );
 
   datarawById = new DataLoader<number, Dataraw | null>((keys) =>
@@ -217,7 +218,8 @@ export class Context {
       .select()
       .then((rows) =>
         rows.map((x) => {
-          this.datarawByKeyId.prime(x.keyid, x);
+          // TODO VERIF
+          this.datarawByKeyId.prime(Number(x.keyid), x);
           return x;
         }),
       )

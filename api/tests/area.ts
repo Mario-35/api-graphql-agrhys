@@ -111,9 +111,8 @@ export const areaTests = (): void => {
       })
       .expect(200)
       .end((err, res) => {
-        console.log(res);
         if (err) return done(err);
-        expect(res.body.data.addArea).toBeInstanceOf(Object);
+        expect(res.body.data).toBeInstanceOf(Object);
         expect(res.body.data.addArea.area.code).toEqual(code);
         expect(res.body.data.addArea.area.name).toEqual(name);
         done();

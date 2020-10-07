@@ -53,7 +53,7 @@ export const addArea = mutationWithClientMutationId({
     },
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line
   async mutateAndGetPayload(input, ctx: Context) {
     const { data, errors } = validateInput(input);
 
@@ -92,7 +92,7 @@ export const updateArea = mutationWithClientMutationId({
     },
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line
   async mutateAndGetPayload(input, ctx: Context) {
     const { data, errors } = validateInput(input);
 
@@ -128,7 +128,7 @@ export const deleteArea = mutationWithClientMutationId({
     },
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line
   async mutateAndGetPayload(input, ctx: Context) {
     const { data, errors } = validate(input, (x) =>
       x

@@ -9,6 +9,5 @@ import { GraphQLString } from "graphql";
 
 export const version = {
   type: GraphQLString,
-  resolve: (): void =>
-    `Inrae API version ${process.env.APP_VERSION} © mario.adam@inrae.fr`,
+  resolve: (): string => `Inrae API version ${process.env.APP_VERSION} © mario.adam@inrae.fr`,
 };

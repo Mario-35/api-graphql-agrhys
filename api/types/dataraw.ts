@@ -48,7 +48,8 @@ export const DatarawType = new GraphQLObjectType<Dataraw, Context>({
     updates: {
       type: new GraphQLList(DataupdateType),
       resolve(self, args, ctx) {
-        return ctx.dataUpdateByKeyId.load(self.keyid);
+        // TEST VERIF
+        return ctx.dataUpdateByKeyId.load(Number(self.keyid));
       },
     },
 
